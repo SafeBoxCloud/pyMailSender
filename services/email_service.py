@@ -1,16 +1,30 @@
 import smtplib
 import email.message
+from models.req_model import Req
+from flask import render_template 
 
-def enviar_email():  
-    corpo_email = """
-    <p>Parágrafo1</p>
-    <p>Parágrafo2</p>
-    """
+def enviar_email(r:Req):  
+    corpo_email = None
+
+    if(r.category == "account deletion"):
+        corpo_email = render_template('account_deletion_template.html', user=r.user)
+
+    elif(r.category == "full storage"):
+        corpo_email = render_template('full_storage_template.html', user=r.user)
+    
+    elif(r.category == "plan promotion"):
+        corpo_email = render_template('plan_promotion_template.html', user=r.user)
+    
+    elif(r.category == "register confirmation"):
+        corpo_email = render_template('registration_confirmation.html', user=r.user)
+    
+    else:
+        raise Exception("a categoria nao existe") 
 
     msg = email.message.Message()
-    msg['Subject'] = "Assunto"
+    msg['Subject'] = r.category
     msg['From'] = 'remetente'
-    msg['To'] = 'destinatario'
+    msg['To'] = r.user.email
     password = 'senha' 
     msg.add_header('Content-Type', 'text/html')
     msg.set_payload(corpo_email )
