@@ -3,7 +3,12 @@ from service.email_service import enviar_email
 from models.req_model import Req
 from models.user_model import User
 from pydantic import ValidationError
-from validate_email import validate_email 
+import re
+
+
+def email_valido(email:str):
+    regex_email = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(regex_email, email) is not None
 
 email_route = Blueprint('email', __name__)
 
@@ -13,9 +18,8 @@ def mandar_email():
 
         json_data = request.get_json()
         data = Req(**json_data)
-        is_valid = validate_email(data.user.email)
 
-        if not is_valid:
+        if not email_valido(data.user.email):
             raise ValidationError('email inválido')
         
         enviar_email(data)
