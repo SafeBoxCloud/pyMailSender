@@ -18,8 +18,8 @@ smtp_port = os.getenv('SMTP_PORT')
 email_bot = os.getenv('EMAIL_BOT')
 pass_bot = os.getenv('PASSWORD_BOT')
 
-if not email_bot or not pass_bot:
-    raise EnvironmentError("EMAIL_BOT ou PASSWORD_BOT não foram configurados corretamente no arquivo .env")
+if not email_bot or not pass_bot or not smtp_port or not smtp_server :
+    raise EnvironmentError("EMAIL_BOT ou PASSWORD_BOT ou SMTP_PORT ou SMTP_SERVER não foram configurados corretamente no arquivo .env")
 
 #func pra pegar a conexão
 def get_smtp_connection():
