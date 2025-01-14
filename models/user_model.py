@@ -1,4 +1,5 @@
-class User:
-    def __init__(self, nome:str, email:str):
-        self.nome = nome
-        self.email = email
+from pydantic import BaseModel
+
+class User(BaseModel):
+        nome:str
+        email:str

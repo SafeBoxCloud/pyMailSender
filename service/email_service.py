@@ -30,17 +30,19 @@ def get_smtp_connection():
 
 #func pra verificar se a categoria existe e se existir, qual template de email enviar
 def verify_category(r:Req):
+    
     templates = {
         "account deletion": 'account_deletion_template.html',
         "full storage": 'full_storage_template.html',
         "plan promotion": 'plan_promotion_template.html',
         "register confirmation": 'registration_confirmation.html'
     }
+    
     if r.category not in templates:
         logger.error(f"categoria {r.category} não existe")
         raise Exception(f"a categoria {r.category} nao existe") 
     
-    return render_template(templates[r.category], user=r.user) 
+    return render_template(templates[r.category], user=r.user.__dict__) 
     
 
 def enviar_email(r:Req): 
@@ -72,5 +74,3 @@ def enviar_email(r:Req):
     
     except smtplib.SMTPException as e:
         logger.error(f"Falha ao enviar o email: {e}")
-    finally:
-        s.quit()

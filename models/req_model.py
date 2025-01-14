@@ -1,6 +1,6 @@
 from models.user_model import User
+from pydantic import BaseModel
 
-class Req:
-    def __init__(self, user:User, category:str ):
-        self.user = user 
-        self.category = category 
+class Req(BaseModel):
+        user:User 
+        category:str 
